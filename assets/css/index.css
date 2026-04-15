@@ -1,0 +1,27 @@
+body {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+.top-banner {
+  background-color: #ea5455;
+  color: white;
+  text-align: center;
+  padding: 12px 20px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.top-banner p {
+  margin: 0;
+  display: inline-block;
+}
+
+.top-banner .shop-now-link {
+  color: white;
+  text-decoration: underline;
+  font-weight: bold;
+  margin-left: 5px;
+  cursor: pointer;
+}
