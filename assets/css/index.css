@@ -25,3 +25,31 @@ body {
   margin-left: 5px;
   cursor: pointer;
 }
+
+.navbar-brand {
+  letter-spacing: -1px;
+}
+
+.nav-link {
+  color: #000 !important;
+  font-weight: 500;
+  margin: 0 10px;
+}
+
+.search-box input {
+  width: 250px;
+  height: 40px;
+  border-radius: 4px;
+}
+
+.btn-danger {
+  background-color: #db4444;
+  border: none;
+}
+.d-block {
+  margin-top: 50px;
+  max-height: 500px;
+}
+.search-icon {
+  margin-right: 15px;
+}
