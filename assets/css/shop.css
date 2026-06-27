@@ -193,3 +193,9 @@
 .btn-add:hover {
   background-color: #343a40;
 }
+
+.shopCategories {
+  height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
