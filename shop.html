@@ -90,7 +90,7 @@
         <h1 class="logo">Shop</h1>
 
         <div class="search-box">
-          <input type="text" placeholder="search" />
+          <input type="text" placeholder="search" id="searchInput" />
         </div>
 
         <div class="filter-section">
@@ -106,23 +106,49 @@
         <div class="filter-section">
           <h3>Rate</h3>
           <div class="rating-filters">
-            <div class="stars">★★★★★</div>
-            <div class="stars">★★★★☆</div>
-            <div class="stars">★★★☆☆</div>
-            <div class="stars">★★☆☆☆</div>
-            <div class="stars">★☆☆☆☆</div>
+            <div class="stars" onclick="getFilterByRating(5)">★★★★★</div>
+            <div class="stars" onclick="getFilterByRating(4)">★★★★☆</div>
+            <div class="stars" onclick="getFilterByRating(3)">★★★☆☆</div>
+            <div class="stars" onclick="getFilterByRating(2)">★★☆☆☆</div>
+            <div class="stars" onclick="getFilterByRating(1)">★☆☆☆☆</div>
+            <div class="stars" onclick="getFilterByRating(0)">☆☆☆☆☆</div>
           </div>
         </div>
       </aside>
 
       <main class="main-content">
         <div class="top-bar">
-          <button class="btn-all">All products</button>
-          <select class="sort-select">
-            <option>Sort by</option>
-            <option>Qiymət: Ucuzdan bahaya</option>
-            <option>Qiymət: Bahadan ucuza</option>
-          </select>
+          <button class="btn-all" onclick="getAllProducts()">
+            All products
+          </button>
+          <div style="display: flex; gap: 20px">
+            <select
+              class="sort-select-option sort-select"
+              onchange="
+                getSortingByOption(
+                  document.querySelector('.sort-select-action').value,
+                  document.querySelector('.sort-select-option').value,
+                )
+              "
+            >
+              <option value="desc">Sort by</option>
+              <option value="desc">desc</option>
+              <option value="asc">asc</option>
+            </select>
+            <select
+              class="sort-select sort-select-action"
+              onchange="
+                getSortingByOption(
+                  document.querySelector('.sort-select-action').value,
+                  document.querySelector('.sort-select-option').value,
+                )
+              "
+            >
+              <option value="rating">Sort by</option>
+              <option value="rating">rating</option>
+              <option value="price">price</option>
+            </select>
+          </div>
         </div>
 
         <div class="product-grid productShowSection">
@@ -147,7 +173,7 @@
       </main>
     </div>
     <!--  -->
-    <footer class="footer">
+    <footer class="footer shopFooter">
       <div class="footer-container">
         <div class="footer-col">
           <h3>Exclusive</h3>

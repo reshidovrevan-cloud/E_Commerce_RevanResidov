@@ -199,3 +199,7 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+.shopFooter {
+  margin-top: 50px;
+}

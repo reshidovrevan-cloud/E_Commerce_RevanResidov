@@ -46,6 +46,7 @@ async function getCategories() {
 
     cleanCategoris.forEach((category) => {
       let li = document.createElement("li");
+      // Node
       li.addEventListener("click", () => {
         getFilterByCategory(category.id);
       });
@@ -60,20 +61,13 @@ async function getCategories() {
 
 getCategories();
 
-let productShowSection = document.querySelector(".productShowSection");
-
-async function getProducts() {
-  try {
-    let products = await fetch(`${server}/products`);
-    let cleanProducts = await products.json();
-
-    console.log(cleanProducts);
-
-    cleanProducts
-      .filter((product) => product.imageUrl !== "")
-      .forEach((product) => {
-        let div = document.createElement("div");
-        div.innerHTML = `
+function showProducts(products) {
+  productShowSection.innerHTML = "";
+  products
+    .filter((product) => product.imageUrl !== "")
+    .forEach((product) => {
+      let div = document.createElement("div");
+      div.innerHTML = `
         <div class="product-img">
               <img
                 src="${product.imageUrl}"
@@ -90,10 +84,27 @@ async function getProducts() {
               <button class="btn-add">add to cart</button>
             </div>
         `;
-        div.className = "product-card";
+      div.className = "product-card";
 
-        productShowSection.appendChild(div);
+      productShowSection.appendChild(div);
+
+      let img = div.querySelector(".product-img img");
+
+      img.addEventListener("error", () => {
+        div.remove();
       });
+    });
+}
+
+let productShowSection = document.querySelector(".productShowSection");
+
+async function getProducts() {
+  try {
+    let products = await fetch(`${server}/products`);
+
+    let cleanProducts = await products.json();
+
+    showProducts(cleanProducts);
   } catch (error) {
     console.log(error);
   }
@@ -102,40 +113,73 @@ async function getProducts() {
 getProducts();
 
 async function getFilterByCategory(categoryId) {
+  console.log(categoryId);
+
   try {
     let products = await fetch(
-      `${server}/products/filter?catgoryId = ${categoryId}&page=1&size=20`,
-      //   0-20 20-40
+      `${server}/products/filter?categoryId=${categoryId}&page=0&size=20`,
+      // 0
     );
+
     let cleanProducts = await products.json();
 
-    console.log(cleanProducts);
+    showProducts(cleanProducts.content);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-    // cleanProducts
-    //   .filter((product) => product.imageUrl !== "")
-    //   .forEach((product) => {
-    //     let div = document.createElement("div");
-    //     div.innerHTML = `
-    //     <div class="product-img">
-    //           <img
-    //             src="${product.imageUrl}"
-    //             alt="${product.model}"
-    //           />
-    //         </div>
-    //         <div class="product-info">
-    //           <h4 class="product-title">${product.brand} - ${product.model}</h4>
-    //           <p class="product-price">${product.price}$</p>
-    //           <div class="product-rating">
-    //             <span class="stars-gold">★★★★★</span>
-    //             <span class="review-count">(62)</span>
-    //           </div>
-    //           <button class="btn-add">add to cart</button>
-    //         </div>
-    //     `;
-    //     div.className = "product-card";
+async function getFilterByRating(productRating) {
+  try {
+    let products = await fetch(
+      `${server}/products/filter?rating=${productRating}&page=0&size=20`,
+    );
 
-    //     productShowSection.appendChild(div);
-    //   });
+    let cleanProducts = await products.json();
+
+    showProducts(cleanProducts.content);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function getAllProducts() {
+  getProducts();
+}
+
+let sortByRating = document.querySelector("#sortByRating");
+let sortByPrice = document.querySelector("#sortByPrice");
+
+async function getSortingByOption(optionValue, descOrAsc) {
+  try {
+    let products = await fetch(
+      `${server}/products/filter?sortField=${optionValue}&sortDir="ASC"&page=0&size=20`,
+    );
+
+    let cleanProducts = await products.json();
+
+    showProducts(cleanProducts.content);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+let searchInput = document.querySelector("#searchInput");
+
+searchInput.addEventListener("change", () => {
+  getProductsBySearch();
+});
+
+async function getProductsBySearch() {
+  let searchInputValue = searchInput.value;
+  try {
+    let products = await fetch(
+      `${server}/products/filter?search=${searchInputValue}&page=0&size=20`,
+    );
+
+    let cleanProducts = await products.json();
+
+    showProducts(cleanProducts.content);
   } catch (error) {
     console.log(error);
   }
