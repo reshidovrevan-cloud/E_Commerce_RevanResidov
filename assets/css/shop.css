@@ -219,3 +219,29 @@
   color: white !important;
   text-decoration: none !important;
 }
+
+.paginationContainer {
+  margin-top: 50px;
+}
+
+.paginationContainer ul {
+  display: flex;
+  gap: 10px;
+  justify-content: end;
+  list-style: none;
+}
+
+.paginationContainer ul li {
+  background-color: white;
+  border: 1px solid black;
+  padding: 10px;
+  color: rgb(14, 171, 93);
+  font: bold 18px sans-serif;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.paginationContainer ul li.active {
+  background-color: #db4444;
+  color: white;
+}

@@ -3,6 +3,16 @@ let server = "http://195.26.245.5:9505/api";
 let loginOrLogOut = document.querySelector(".loginOrLogOut");
 let loggedIn = localStorage.getItem("loggedIn") === "true" || false;
 
+let productsCount = null;
+// 37
+let productCountInPage = 8;
+// 8
+
+let pageSize = null;
+// 1 2 3 4 5
+
+let whichPageSelected = 1;
+
 let newElement = loggedIn
   ? `<ul class="logOutList">
     <li class="profileIcon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
@@ -42,8 +52,6 @@ async function getCategories() {
     let categories = await fetch(`${server}/categories`);
     let cleanCategoris = await categories.json();
 
-    console.log(cleanCategoris);
-
     cleanCategoris.forEach((category) => {
       let li = document.createElement("li");
       // Node
@@ -62,6 +70,8 @@ async function getCategories() {
 getCategories();
 
 function showProducts(products) {
+  console.log(products);
+
   productShowSection.innerHTML = "";
   products
     .filter((product) => product.imageUrl !== "")
@@ -104,6 +114,12 @@ async function getProducts() {
 
     let cleanProducts = await products.json();
 
+    console.log(cleanProducts);
+
+    productsCount = cleanProducts.length;
+
+    showPagination();
+
     showProducts(cleanProducts);
   } catch (error) {
     console.log(error);
@@ -117,7 +133,7 @@ async function getFilterByCategory(categoryId) {
 
   try {
     let products = await fetch(
-      `${server}/products/filter?categoryId=${categoryId}&page=0&size=20`,
+      `${server}/products/filter?categoryId=${categoryId}&page=${whichPageSelected - 1}&size=${productCountInPage}`,
       // 0
     );
 
@@ -132,7 +148,7 @@ async function getFilterByCategory(categoryId) {
 async function getFilterByRating(productRating) {
   try {
     let products = await fetch(
-      `${server}/products/filter?rating=${productRating}&page=0&size=20`,
+      `${server}/products/filter?rating=${productRating}&page=${whichPageSelected - 1}&size=${productCountInPage}`,
     );
 
     let cleanProducts = await products.json();
@@ -153,7 +169,7 @@ let sortByPrice = document.querySelector("#sortByPrice");
 async function getSortingByOption(optionValue, descOrAsc) {
   try {
     let products = await fetch(
-      `${server}/products/filter?sortField=${optionValue}&sortDir="ASC"&page=0&size=20`,
+      `${server}/products/filter?sortField=${optionValue}&sortDir="ASC"&page=${whichPageSelected - 1}&size=${productCountInPage}`,
     );
 
     let cleanProducts = await products.json();
@@ -174,10 +190,89 @@ async function getProductsBySearch() {
   let searchInputValue = searchInput.value;
   try {
     let products = await fetch(
-      `${server}/products/filter?search=${searchInputValue}&page=0&size=20`,
+      `${server}/products/filter?search=${searchInputValue}&page=${whichPageSelected - 1}&size=${productCountInPage}`,
     );
 
     let cleanProducts = await products.json();
+
+    showProducts(cleanProducts.content);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+let generalSearch = document.querySelector("#generalSearch");
+let generalSearchIcon = document.querySelector(".generalSearchIcon");
+
+generalSearch.addEventListener("change", () => {
+  getGeneralSearch();
+});
+
+generalSearchIcon.addEventListener("click", () => {
+  getGeneralSearch();
+});
+
+async function getGeneralSearch() {
+  let generalSearchValue = generalSearch.value;
+  try {
+    let products = await fetch(
+      `${server}/products/filter?search=${generalSearchValue}&page=${whichPageSelected - 1}&size=${productCountInPage}`,
+    );
+
+    let cleanProducts = await products.json();
+
+    showProducts(cleanProducts.content);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    generalSearch.value = "";
+  }
+}
+
+let paginationList = document.querySelector(".paginationList");
+
+function showPagination() {
+  for (let i = 0; i < Math.ceil(productsCount / productCountInPage); i++) {
+    let li = document.createElement("li");
+    if (i === 0) li.classList.add("active");
+
+    li.innerHTML = i + 1;
+    paginationList.appendChild(li);
+  }
+
+  getPaginatedProducts(1, productCountInPage);
+
+  let paginationListElement = document.querySelectorAll(".paginationList li");
+
+  paginationListElement.forEach((liElement) => {
+    liElement.addEventListener("click", (e) => {
+      let clickedElement = e.target;
+      clickedElement.classList.add("active");
+
+      getSelectedPage(e.target.innerHTML);
+
+      paginationListElement.forEach((li) => {
+        if (li !== clickedElement) li.classList.remove("active");
+      });
+    });
+  });
+}
+
+function getSelectedPage(whichPage) {
+  whichPageSelected = whichPage;
+
+  getPaginatedProducts(whichPageSelected, productCountInPage);
+}
+
+async function getPaginatedProducts(page, size) {
+  try {
+    let products = await fetch(
+      `${server}/products/filter?page=${page - 1}&size=${size}`,
+    );
+
+    let cleanProducts = await products.json();
+
+    console.log(cleanProducts);
 
     showProducts(cleanProducts.content);
   } catch (error) {
