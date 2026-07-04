@@ -203,3 +203,19 @@
 .shopFooter {
   margin-top: 50px;
 }
+.loginOrLogOut {
+  background-color: #db4444 !important;
+  border: none !important;
+  color: white !important;
+  border-radius: 4px !important;
+}
+.loginList {
+  list-style: none;
+  padding: 6px 20px !important;
+  height: 21px;
+}
+
+.loginnnnn {
+  color: white !important;
+  text-decoration: none !important;
+}
