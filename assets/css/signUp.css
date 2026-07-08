@@ -42,9 +42,6 @@
 }
 
 .search-icon-svg {
-  position: absolute;
-  right: 10px;
-  color: #000;
 }
 
 .form-container {
@@ -120,9 +117,9 @@ input:focus {
 /*  */
 
 .footer {
-  background-color: #db4444; /* Orijinal qırmızı rəng */
+  background-color: #db4444;
   color: white;
-  padding: 80px 5% 24px 5%;
+  padding: 80px 5px 24px 5px;
 }
 
 .footer-container {
@@ -258,4 +255,19 @@ input:focus {
   text-align: center;
   color: rgba(255, 255, 255, 0.3);
   font-size: 14px;
+}
+.navbarLogin {
+  display: flex !important;
+  align-items: center !important;
+  padding: 15px 350px 0 0;
+}
+
+.searchLogin {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eCommerceButton {
+  display: flex;
+  align-items: center;
 }
