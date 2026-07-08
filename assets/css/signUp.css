@@ -259,15 +259,18 @@ input:focus {
 .navbarLogin {
   display: flex !important;
   align-items: center !important;
-  padding: 15px 350px 0 0;
+  padding: 15px 250px 0 0;
+  gap: 20px;
 }
 
 .searchLogin {
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 .eCommerceButton {
   display: flex;
   align-items: center;
+}
+.navbar-nav {
+  gap: 35px;
 }
