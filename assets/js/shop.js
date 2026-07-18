@@ -70,46 +70,91 @@ async function getCategories() {
 getCategories();
 
 function showProducts(products) {
-  console.log(products);
+  // console.log(products);
 
-  productShowSection.innerHTML = "";
-  products
-    .filter((product) => product.imageUrl !== "")
-    .forEach((product) => {
-      let div = document.createElement("div");
-      div.innerHTML = `
-        <div class="product-img">
-              <img
-                src="${product.imageUrl}"
-                alt="${product.model}"
-              />
-            </div>
-            <div class="product-info">
-              <h4 class="product-title">${product.brand} - ${product.model}</h4>
-              <p class="product-price">${product.price}$</p>
-              <div class="product-rating">
-                <span class="stars-gold">★★★★★</span>
-                <span class="review-count">(62)</span>
-              </div>
-              <button class="btn-add">add to cart</button>
-            </div>
-        `;
-      div.className = "product-card";
+  // productShowSection.innerHTML = "";
+  // let productsWithImages = products.filter(
+  //   (product) => product.imageUrl !== "",
+  // );
 
-      productShowSection.appendChild(div);
+  // if (productsWithImages.length !== 0) {
+  //   productsWithImages.forEach((product) => {
+  //     let div = document.createElement("div");
+  //     div.innerHTML = `
+  //       <div class="product-img">
+  //             <img
+  //               src="${product.imageUrl}"
+  //               alt="${product.model}"
+  //             />
+  //           </div>
+  //           <div class="product-info">
+  //             <h4 class="product-title">${product.brand} - ${product.model}</h4>
+  //             <p class="product-price">${product.price}$</p>
+  //             <div class="product-rating">
+  //               <span class="stars-gold">★★★★★</span>
+  //               <span class="review-count">(62)</span>
+  //             </div>
+  //             <button class="btn-add">add to cart</button>
+  //           </div>
+  //       `;
+  //     div.className = "product-card";
 
-      let img = div.querySelector(".product-img img");
+  //     productShowSection.appendChild(div);
 
-      img.addEventListener("error", () => {
-        div.remove();
-      });
-    });
+  //     let img = div.querySelector(".product-img img");
+
+  //     img.addEventListener("error", () => {
+  //       div.remove();
+  //     });
+  //   });
+  // } else {
+  // let notFoundImage = document.createElement("img");
+  //   notFoundImage.classList.add("notFoundImage");
+  //   Object.assign(notFoundImage, {
+  //     src: "../img/error.png",
+  //     alt: "not found",
+  //   });
+  //   productShowSection.appendChild(notFoundImage);
+  // }
+
+  let notFoundImageDiv = document.createElement("div");
+  notFoundImageDiv.classList.add("notFoundImageDiv");
+  let notFoundImage = document.createElement("img");
+  notFoundImage.classList.add("notFoundImage");
+
+  Object.assign(productShowSection.style, {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  });
+
+  Object.assign(notFoundImageDiv.style, {
+    width: "400px",
+    display: "block",
+  });
+
+  Object.assign(notFoundImage.style, {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    objectFit: "cover",
+  });
+
+  // Object.assign(notFoundImage, {
+  //   src: "/assets/image/error.png",
+  //   alt: "not found",
+  // });
+
+  notFoundImageDiv.appendChild(notFoundImage);
+  productShowSection.appendChild(notFoundImageDiv);
 }
 
 let productShowSection = document.querySelector(".productShowSection");
 
 async function getProducts() {
   try {
+    showLoading();
     let products = await fetch(`${server}/products`);
 
     let cleanProducts = await products.json();
@@ -123,6 +168,8 @@ async function getProducts() {
     showProducts(cleanProducts);
   } catch (error) {
     console.log(error);
+  } finally {
+    hideLoading();
   }
 }
 
@@ -132,6 +179,7 @@ async function getFilterByCategory(categoryId) {
   console.log(categoryId);
 
   try {
+    showLoading();
     let products = await fetch(
       `${server}/products/filter?categoryId=${categoryId}&page=${whichPageSelected - 1}&size=${productCountInPage}`,
       // 0
@@ -142,6 +190,8 @@ async function getFilterByCategory(categoryId) {
     showProducts(cleanProducts.content);
   } catch (error) {
     console.log(error);
+  } finally {
+    hideLoading();
   }
 }
 
@@ -201,33 +251,33 @@ async function getProductsBySearch() {
   }
 }
 
-let generalSearch = document.querySelector("#generalSearch");
-let generalSearchIcon = document.querySelector(".generalSearchIcon");
+// let generalSearch = document.querySelector("#generalSearch");
+// let generalSearchIcon = document.querySelector(".generalSearchIcon");
 
-generalSearch.addEventListener("change", () => {
-  getGeneralSearch();
-});
+// generalSearch.addEventListener("change", () => {
+//   getGeneralSearch();
+// });
 
-generalSearchIcon.addEventListener("click", () => {
-  getGeneralSearch();
-});
+// generalSearchIcon.addEventListener("click", () => {
+//   getGeneralSearch();
+// });
 
-async function getGeneralSearch() {
-  let generalSearchValue = generalSearch.value;
-  try {
-    let products = await fetch(
-      `${server}/products/filter?search=${generalSearchValue}&page=${whichPageSelected - 1}&size=${productCountInPage}`,
-    );
+// async function getGeneralSearch() {
+//   let generalSearchValue = generalSearch.value;
+//   try {
+//     let products = await fetch(
+//       `${server}/products/filter?search=${generalSearchValue}&page=${whichPageSelected - 1}&size=${productCountInPage}`,
+//     );
 
-    let cleanProducts = await products.json();
+//     let cleanProducts = await products.json();
 
-    showProducts(cleanProducts.content);
-  } catch (error) {
-    console.log(error);
-  } finally {
-    generalSearch.value = "";
-  }
-}
+//     showProducts(cleanProducts.content);
+//   } catch (error) {
+//     console.log(error);
+//   } finally {
+//     generalSearch.value = "";
+//   }
+// }
 
 let paginationList = document.querySelector(".paginationList");
 
@@ -278,4 +328,26 @@ async function getPaginatedProducts(page, size) {
   } catch (error) {
     console.log(error);
   }
+}
+
+showProducts({});
+
+function showLoading() {
+  let loadingDiv = document.createElement("div");
+  loadingDiv.classList.add("notFoundImageDiv");
+  loadingDiv.innerHTML = `<i class=" fa-solid fa-spinner fa-spin fa-5x" style="color: rgb(178, 0, 0);"></i>`;
+
+  Object.assign(productShowSection.style, {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+    minHeight: "300px",
+  });
+  productShowSection.appendChild(loadingDiv);
+}
+
+function hideLoading() {
+  let loadingDiv = document.querySelector(".notFoundImageDiv");
+  productShowSection.removeChild(loadingDiv);
 }

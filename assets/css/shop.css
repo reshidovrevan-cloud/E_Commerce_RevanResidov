@@ -245,3 +245,9 @@
   background-color: #db4444;
   color: white;
 }
+/* .bigdiv > a > div {
+  margin-top: 51px;
+} */
+/* .bigdiv > :nth-child(3) {
+  margin-top: 5px !important;
+} */
