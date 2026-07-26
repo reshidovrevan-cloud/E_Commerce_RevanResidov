@@ -70,84 +70,149 @@ async function getCategories() {
 getCategories();
 
 function showProducts(products) {
-  // console.log(products);
+  productShowSection.innerHTML = "";
+  let productsWithImages = products.filter(
+    (product) => product.imageUrl !== "",
+  );
 
-  // productShowSection.innerHTML = "";
-  // let productsWithImages = products.filter(
-  //   (product) => product.imageUrl !== "",
-  // );
+  if (productsWithImages.length !== 0) {
+    productsWithImages.forEach((product) => {
+      let div = document.createElement("div");
+      div.innerHTML = `
+        <div class="product-img">
+              <img
+                src="${product.imageUrl}"
+                alt="${product.model}"
+              />
+            </div>
+            <div class="product-info">
+              <h4 class="product-title">${product.brand} - ${product.model}</h4>
+              <p class="product-price">${product.price}$</p>
+              <div class="product-rating">
+                <span class="stars-gold">★★★★★</span>
+                <span class="review-count">(62)</span>
+              </div>
+              <button class="btn-add" onclick="addToCart(
+               ${product.id}
+              )">add to cart</button>
+            </div>
+        `;
 
-  // if (productsWithImages.length !== 0) {
-  //   productsWithImages.forEach((product) => {
-  //     let div = document.createElement("div");
-  //     div.innerHTML = `
-  //       <div class="product-img">
-  //             <img
-  //               src="${product.imageUrl}"
-  //               alt="${product.model}"
-  //             />
-  //           </div>
-  //           <div class="product-info">
-  //             <h4 class="product-title">${product.brand} - ${product.model}</h4>
-  //             <p class="product-price">${product.price}$</p>
-  //             <div class="product-rating">
-  //               <span class="stars-gold">★★★★★</span>
-  //               <span class="review-count">(62)</span>
-  //             </div>
-  //             <button class="btn-add">add to cart</button>
-  //           </div>
-  //       `;
-  //     div.className = "product-card";
+      div.className = "product-card";
 
-  //     productShowSection.appendChild(div);
+      productShowSection.appendChild(div);
 
-  //     let img = div.querySelector(".product-img img");
+      let img = div.querySelector(".product-img img");
 
-  //     img.addEventListener("error", () => {
-  //       div.remove();
-  //     });
-  //   });
-  // } else {
-  // let notFoundImage = document.createElement("img");
-  //   notFoundImage.classList.add("notFoundImage");
-  //   Object.assign(notFoundImage, {
-  //     src: "../img/error.png",
-  //     alt: "not found",
-  //   });
-  //   productShowSection.appendChild(notFoundImage);
-  // }
+      img.addEventListener("error", () => {
+        div.remove();
+      });
+    });
+  } else {
+    let notFoundImageDiv = document.createElement("div");
+    notFoundImageDiv.classList.add("notFoundImageDiv");
+    let notFoundImage = document.createElement("img");
+    notFoundImage.classList.add("notFoundImage");
 
-  let notFoundImageDiv = document.createElement("div");
-  notFoundImageDiv.classList.add("notFoundImageDiv");
-  let notFoundImage = document.createElement("img");
-  notFoundImage.classList.add("notFoundImage");
+    Object.assign(productShowSection.style, {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+    });
 
-  Object.assign(productShowSection.style, {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  });
+    Object.assign(notFoundImageDiv.style, {
+      width: "400px",
+      display: "block",
+    });
 
-  Object.assign(notFoundImageDiv.style, {
-    width: "400px",
-    display: "block",
-  });
+    Object.assign(notFoundImage.style, {
+      display: "flex !important",
+      justifyContent: "center !important",
+      alignItems: "center !important",
+      width: "100%",
+      objectFit: "cover",
+    });
 
-  Object.assign(notFoundImage.style, {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    objectFit: "cover",
-  });
+    Object.assign(notFoundImage, {
+      src: "/assets/image/error.png",
+      alt: "not found",
+    });
 
-  // Object.assign(notFoundImage, {
-  //   src: "/assets/image/error.png",
-  //   alt: "not found",
-  // });
+    notFoundImageDiv.appendChild(notFoundImage);
+    productShowSection.appendChild(notFoundImageDiv);
+  }
+}
 
-  notFoundImageDiv.appendChild(notFoundImage);
-  productShowSection.appendChild(notFoundImageDiv);
+async function addToCart(id) {
+  let loggedIn = localStorage.getItem("loggedIn") == "true";
+
+  console.log(loggedIn);
+
+  if (!loggedIn) {
+    Toastify({
+      text: "Birinci login ol !",
+      duration: 3000,
+      newWindow: true,
+      close: true,
+      gravity: "top",
+      position: "right",
+      stopOnFocus: true,
+      style: {
+        background: "linear-gradient(to right, #00b09b, #96c93d)",
+      },
+    }).showToast();
+
+    setTimeout(() => {
+      location.href = "/login.html";
+    }, 3000);
+
+    return;
+  }
+
+  let myCarts = JSON.parse(localStorage.getItem("myCarts")) || {};
+
+  console.log(myCarts, id);
+
+  if (myCarts[id]) {
+    myCarts[id].quantity += 1;
+    localStorage.setItem("myCarts", JSON.stringify(myCarts));
+    window.location.href = "/cart.html";
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(`${server}/products/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      console.log("Xəta:", response.status);
+      return;
+    }
+
+    const data = await response.json();
+
+    myCarts[id] = {
+      id: data.id,
+      price: data.price,
+      imageUrl: data.imageUrl,
+      brand: data.brand,
+      model: data.model,
+      quantity: 1,
+    };
+
+    localStorage.setItem("myCarts", JSON.stringify(myCarts));
+  } catch (error) {
+    console.log(error);
+  } finally {
+    // window.location.href = "/cart.html";
+  }
 }
 
 let productShowSection = document.querySelector(".productShowSection");
@@ -282,6 +347,7 @@ async function getProductsBySearch() {
 let paginationList = document.querySelector(".paginationList");
 
 function showPagination() {
+  paginationList.innerHTML = "";
   for (let i = 0; i < Math.ceil(productsCount / productCountInPage); i++) {
     let li = document.createElement("li");
     if (i === 0) li.classList.add("active");
@@ -322,7 +388,7 @@ async function getPaginatedProducts(page, size) {
 
     let cleanProducts = await products.json();
 
-    console.log(cleanProducts);
+    console.log(cleanProducts, "askndfgiuko");
 
     showProducts(cleanProducts.content);
   } catch (error) {
@@ -330,24 +396,20 @@ async function getPaginatedProducts(page, size) {
   }
 }
 
-showProducts({});
-
 function showLoading() {
   let loadingDiv = document.createElement("div");
   loadingDiv.classList.add("notFoundImageDiv");
-  loadingDiv.innerHTML = `<i class=" fa-solid fa-spinner fa-spin fa-5x" style="color: rgb(178, 0, 0);"></i>`;
+  loadingDiv.innerHTML = `Loading...`;
 
   Object.assign(productShowSection.style, {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
-    minHeight: "300px",
   });
   productShowSection.appendChild(loadingDiv);
 }
 
 function hideLoading() {
   let loadingDiv = document.querySelector(".notFoundImageDiv");
-  productShowSection.removeChild(loadingDiv);
+  loadingDiv?.parentNode?.removeChild(loadingDiv);
 }

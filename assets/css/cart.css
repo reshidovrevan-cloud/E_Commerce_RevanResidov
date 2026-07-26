@@ -20,14 +20,6 @@
   max-width: 1290px;
 }
 
-body {
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
-  color: var(--color-text);
-  background: #ffffff;
-}
-
 .cart-page {
   margin: 0 auto;
   padding: 48px 32px 80px;

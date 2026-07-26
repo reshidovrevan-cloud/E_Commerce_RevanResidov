@@ -1,56 +1,208 @@
-.our-story {
-  width: 100%;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  color: #000000;
+  background-color: #ffffff;
+  line-height: 1.5;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+.container {
+  max-width: 1270px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Top Banner */
+.top-banner {
+  background-color: #db4444; /* Secondary 2 / Accent Red */
+  color: #fafafa;
+  text-align: center;
+  padding: 12px 10px;
+  font-size: 14px;
+}
+
+.top-banner a {
+  font-weight: 600;
+  text-decoration: underline;
+  margin-left: 5px;
+}
+
+/* Header Navbar */
+.header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.149);
+  padding: 15px 0;
+}
+
+.header-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 60px;
-  margin-bottom: 140px;
-}
-.about {
-  margin: 115px;
-}
-.story-text {
-  flex: 1;
 }
 
-.breadcrumb {
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.nav ul {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.ecommergeEsas {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 35px;
+}
+
+.nav a {
   font-size: 14px;
-  color: #000000;
-  display: inline-block;
-  margin-bottom: 24px;
+  font-weight: 400;
+  transition: color 0.2s;
+  text-decoration: none;
+  color: inherit;
 }
 
-.story-text h1 {
+.nav a:hover,
+.nav a.active {
+  border-bottom: 1px solid #00000075;
+}
+
+.shop-btn {
+  background-color: #db4444;
+  color: #fff !important;
+  padding: 6px 16px;
+  border-radius: 4px;
+  border-bottom: none !important;
+
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Header Right */
+.header-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px;
+}
+
+.search-box {
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 4px;
+}
+
+.search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 12px;
+  width: 150px;
+}
+
+.search-box button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.search-box button img {
+  width: 16px;
+  height: 16px;
+}
+
+.login-btn {
+  background-color: #db4444;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  margin: 40px 0;
+  font-size: 14px;
+  color: #808080;
+}
+
+.breadcrumb a {
+  color: #808080;
+}
+
+.breadcrumb span {
+  color: #000000;
+  font-weight: 500;
+}
+
+/* Hero Section */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 80px;
+}
+
+.hero-text {
+  flex: 1;
+  max-width: 525px;
+}
+
+.hero-text h1 {
   font-size: 54px;
   font-weight: 600;
   letter-spacing: 2px;
-  margin-bottom: 40px;
-  color: #000000;
+  margin-bottom: 30px;
 }
 
-.story-text p {
+.hero-text p {
   font-size: 15px;
   color: #000000;
-  margin-bottom: 27px;
+  margin-bottom: 20px;
+  line-height: 1.6;
 }
 
-.story-img {
+.hero-image {
   flex: 1;
   display: flex;
   justify-content: flex-end;
 }
 
-.story-img img {
-  max-width: 80%;
+.hero-image img {
+  max-width: 100%;
   height: auto;
-  object-fit: contain;
-  border-radius: 5px;
+  border-radius: 4px;
+}
+
+/* Team Section */
+.team-section {
+  margin-bottom: 100px;
 }
 
 .team-grid {
-  width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Yan-yana 3 bərabər sütun */
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
 
@@ -59,67 +211,75 @@
   flex-direction: column;
 }
 
-/* Boz fon bloku */
-.card-img-wrapper {
+.member-img {
   background-color: #f5f5f5;
   border-radius: 4px;
-  width: 100%;
-  height: 430px; /* Şaquli uzunluq */
-  display: flex;
-  align-items: flex-end; /* Şəkli alt xəttə sıfırlayır */
-  justify-content: center;
+  margin-bottom: 20px;
   overflow: hidden;
-  margin-bottom: 24px;
+  height: 380px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
-.card-img-wrapper img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; /* Şəkilləri əymir və kəsmir */
-  display: block;
+.member-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .team-card h3 {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 500;
   letter-spacing: 0.5px;
   margin-bottom: 4px;
 }
 
-.team-card p {
-  font-size: 14px;
-  color: #7d7d7d;
+.team-card .role {
+  font-size: 16px;
+  color: #000000;
   margin-bottom: 12px;
 }
 
-.social-icons {
+.social-links {
   display: flex;
+  align-items: center;
   gap: 16px;
 }
 
-.social-icons a {
-  color: #000000;
-  font-size: 18px;
-  text-decoration: none;
+.social-links img {
+  width: 20px;
+  height: 20px;
+  transition: opacity 0.2s;
 }
 
-/* Mobil tənzimləmə */
+.social-links a:hover img {
+  opacity: 0.7;
+}
+
+/* Responsive Support */
 @media (max-width: 992px) {
-  .our-story {
+  .hero-section {
     flex-direction: column;
-    gap: 40px;
-    text-align: center;
   }
-  .story-img {
-    justify-content: center;
-  }
+
   .team-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .team-grid {
     grid-template-columns: 1fr;
   }
+
+  .nav ul {
+    display: none;
+  }
+}
+
+/* footer */
+.submiticon {
+  padding: 3px 0 0 0;
 }
