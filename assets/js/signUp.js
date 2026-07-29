@@ -149,7 +149,7 @@ async function fetchRegister(e) {
     }).showToast();
 
     setTimeout(() => {
-      window.location.href = "/logİn.html";
+      window.location.href = "/logIn.html";
     }, 2500);
   } catch (error) {
     console.error(error);

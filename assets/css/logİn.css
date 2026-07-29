@@ -7,18 +7,18 @@
 }
 
 .form-container {
-  width: 100%;
-  max-width: 400px;
-  padding: 20px;
+  width: 100% !important;
+  max-width: 400px !important;
+  padding: 20px !important;
 }
-/* 
-h1 {
+
+.logInH1 {
   font-size: 48px;
   font-weight: 500;
   text-align: center;
   margin-bottom: 40px;
   color: #2c2c2c;
-} */
+}
 
 .input-box {
   margin-bottom: 25px;

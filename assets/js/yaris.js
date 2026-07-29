@@ -80,13 +80,13 @@
 //   `;
 // });
 
-let soz = prompt("Bir soz daxil edin:");
+// let soz = prompt("Bir soz daxil edin:");
 
-let ilkHerf = soz[0];
-let sonHerf = soz[soz.length - 1];
+// let ilkHerf = soz[0];
+// let sonHerf = soz[soz.length - 1];
 
-if (ilkHerf.toLowerCase() == "a" && sonHerf.toLowerCase() == "a") {
-  alert("Her sey qaydasindadi!");
-} else {
-  alert("İlk ve son herfi A deyil!");
-}
+// if (ilkHerf.toLowerCase() == "a" && sonHerf.toLowerCase() == "a") {
+//   alert("Her sey qaydasindadi!");
+// } else {
+//   alert("İlk ve son herfi A deyil!");
+// }
