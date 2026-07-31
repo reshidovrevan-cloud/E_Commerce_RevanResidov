@@ -127,6 +127,7 @@ async function fetchLogin() {
     }
 
     setTimeout(() => {
+      localStorage.setItem("loggedIn", true);
       window.location.href = "/profile.html";
     }, 3000);
   } catch (error) {
